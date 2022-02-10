@@ -1,9 +1,16 @@
 :root {
-  --accent-color: #00c81b;
+  --theme-color: rgb(38, 98, 217);
   
-  --background-color: #ffffff;
-  --card-color: #f1f1f1;
-  --shadow-color: rgba(0, 0, 0, 0.1);
+  --background-color: var(--base-color-2);
+  --base-color-1: hsl(0, 0%, 92%);
+  --base-color-2: hsl(0, 0%, 95%);
+  --base-color-3: hsl(0, 0%, 98%);
+  --base-color-4: hsl(0, 0%, 100%);
+  --base-text-color-1: hsl(0, 0%, 0%);
+  --base-text-color-2: hsl(0, 0%, 15%);
+  --base-text-color-3: hsl(0, 0%, 32%);
+  --card-color: var(--base-color-4);
+  --shadow-color: rgba(0, 0, 0, 0.25);
   --button-text-color: #000000;
-  --button-hover-color: #dadada;
+  --button-active-color: hsl(0, 0%, 70%);
 }

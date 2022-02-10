@@ -2,15 +2,13 @@ import React from 'react';
 import './App.scss';
 import './colors.scss';
 import Navigation from './components/Layout/Navigation';
-import Today from './components/Today/Today';
+import Today from './components/Today/Day';
+import TasksContextProvider from './store/TasksContextProvider';
 
-// eslint-disable-next-line arrow-body-style
-const App: React.FC = () => {
-  return (
-    <>
-      <Navigation />
-      <Today />
-    </>
-  );
-};
+const App: React.FC = () => (
+  <TasksContextProvider>
+    <Navigation />
+    <Today />
+  </TasksContextProvider>
+);
 export default App;

@@ -2,26 +2,54 @@
 @use '../../mixins';
 
 .task {
+  display: block;
   box-sizing: border-box;
   padding: 20px 15px;
   @include mixins.margin-gap-vertical(24px);
   
   background-color: var(--card-color);
+  box-shadow: 0px 1px 3px rgb(0, 0, 0, 0.1);
   border-radius: sizes.$border-radius;
 }
 
 h2 {
   margin: 0;
   margin-bottom: 20px;
-  font-size: 1.3rem;
+  font-size: 1.1rem;
+}
+
+.task__fulfill-container {
+  display: flex;
+  align-items: flex-end;
+  justify-items: stretch;
+}
+
+.task__bar-container {
+  flex-grow: 1;
+}
+
+.task__bar-label-container {
+  @include mixins.clearfix();
+  margin-bottom: 10px;
+  color: var(--base-text-color-3);
+}
+
+.task__bar-label {
+  &:first-child {
+    float: left;
+  }
+
+  &:last-child {
+    float: right;
+  }
 }
 
 .task__bar {
   overflow: hidden;
-  height: 16px;
+  height: 14px;
   width: 100%;
   
-  background-color: #ccc;
+  background-color: var(--base-color-1);
   border-radius: 100px;
 }
 

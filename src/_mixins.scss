@@ -19,3 +19,11 @@
     margin-bottom: $margin-size;
   }
 }
+
+@mixin clearfix() {
+  &::after {
+    content: '';
+    display: block;
+    clear: both;
+  }
+}

@@ -1,0 +1,45 @@
+@use '../../sizes';
+@use '../../mixins';
+
+$height: 32px;
+
+.task__form {
+  margin-left: 15px;
+  display: flex;
+  align-items: center;
+  font-size: 16px;
+}
+
+.task__form-input {
+  height: $height;
+  width: 50px;
+  border: none;
+  border-radius: 100px;
+  background-color: var(--base-color-1);
+
+  text-align: center;
+  font-family: inherit;
+  font-size: 1rem;
+  font-weight: bold;
+}
+
+.task__form-button {
+  $size: $height;
+  display: block;
+  cursor: pointer;
+  height: $size;
+  width: $size;
+  padding: #{($size - 20px) * 0.5};
+  @include mixins.margin-gap-horizontal(10px);
+  border: none;
+  border-radius: 100%;
+  background-color: var(--base-color-1);
+  
+  color: #000;
+  text-align: center;
+  transition: all sizes.$common-transition-time ease;
+
+  &:active {
+    background-color: var(--button-active-color);
+  }
+}
