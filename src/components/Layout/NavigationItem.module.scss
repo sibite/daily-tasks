@@ -1,0 +1,25 @@
+@use '../../sizes';
+@use '../../mixins';
+
+.navigation__item {
+  cursor: pointer;
+  display: block;
+  box-sizing: border-box;
+  height: 100%;
+  padding: 14px 20px;
+  
+  background-color: transparent;
+  border: none;
+  // border-radius: sizes.$border-radius;
+  
+  font-family: inherit;
+  font-weight: bold;
+  font-size: 1rem;
+  color: var(--button-text-color);
+
+  transition: all sizes.$common-transition-time ease;
+
+  &:hover {
+    color: var(--accent-color);
+  }
+}

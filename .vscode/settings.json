@@ -1,6 +1,7 @@
 {
   "editor.defaultFormatter": "dbaeumer.vscode-eslint",
   "editor.formatOnSave": true,
+  "files.eol": "\n",
   "editor.codeActionsOnSave": {
     "source.fixAll.eslint": true
   }

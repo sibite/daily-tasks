@@ -1,0 +1,5 @@
+@use '../../mixins';
+
+.page__segment {
+  @include mixins.margin-gap-vertical(50px);
+}

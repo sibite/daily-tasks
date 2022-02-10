@@ -4,11 +4,10 @@ module.exports = {
     es2021: true,
   },
   extends: [
-    'plugin:@typescript-eslint/recommended',
-    'plugin:react/recommended',
     'airbnb',
-    'airbnb/hooks',
     'airbnb-typescript',
+    'airbnb/hooks',
+    'plugin:@typescript-eslint/recommended',
   ],
   parser: '@typescript-eslint/parser',
   parserOptions: {
@@ -24,5 +23,11 @@ module.exports = {
     '@typescript-eslint',
   ],
   rules: {
+    'react/function-component-definition': [
+      2,
+      {
+        namedComponents: 'arrow-function',
+      },
+    ],
   },
 };
