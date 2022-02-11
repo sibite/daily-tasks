@@ -1,14 +1,17 @@
 import React from 'react';
 import './App.scss';
-import './colors.scss';
+import Today from './components/Day/Day';
 import Navigation from './components/Layout/Navigation';
-import Today from './components/Today/Day';
+import DaysContextProvider from './store/DaysContextProvider';
 import TasksContextProvider from './store/TasksContextProvider';
+import './styles/colors.scss';
 
 const App: React.FC = () => (
   <TasksContextProvider>
-    <Navigation />
-    <Today />
+    <DaysContextProvider>
+      <Navigation />
+      <Today />
+    </DaysContextProvider>
   </TasksContextProvider>
 );
 export default App;

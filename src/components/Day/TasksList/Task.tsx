@@ -1,8 +1,8 @@
 import React from 'react';
-import { TaskUnit } from '../../store/TasksContext';
+import { TaskUnit } from '../../../store/TasksContext';
 import classes from './Task.module.scss';
 import TaskBar from './TaskBar';
-import TaskStatusForm from './TaskStatusForm';
+import TaskStatusForm from './TaskForm';
 
 interface TaskProps {
   name: string;
@@ -19,7 +19,7 @@ const Task: React.FC<TaskProps> = ({
     <h2>{name}</h2>
     <div className={classes['task__fulfill-container']}>
       <TaskBar max={target} current={progress} color={color} unit={unit} />
-      <TaskStatusForm />
+      <TaskStatusForm unit={unit} />
     </div>
   </li>
 );

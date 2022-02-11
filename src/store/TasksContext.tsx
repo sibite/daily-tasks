@@ -9,10 +9,10 @@ export interface Task {
   target: number;
 }
 
-export interface TasksContextType {
+export interface TasksStoreType {
   list: { [key: number]: Task };
 }
 
-export const TasksContext = React.createContext<TasksContextType>({
+export const TasksContext = React.createContext<TasksStoreType>({
   list: {},
 });

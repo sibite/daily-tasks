@@ -1,5 +1,5 @@
-@use '../../sizes';
-@use '../../mixins';
+@use '../../styles/sizes';
+@use '../../styles/mixins';
 
 .navigation__item {
   cursor: pointer;
@@ -10,7 +10,6 @@
   
   background-color: transparent;
   border: none;
-  // border-radius: sizes.$border-radius;
   
   font-family: inherit;
   font-size: 1.1rem;

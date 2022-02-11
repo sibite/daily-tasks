@@ -1,0 +1,25 @@
+@use '../../../styles/sizes';
+@use '../../../styles/mixins';
+
+$height: 32px;
+
+.task__form {
+  margin-left: 15px;
+  display: flex;
+  align-items: center;
+  font-size: 16px;
+}
+
+.task__form-input {
+  height: $height;
+  width: 40px;
+  padding: 0 5px;
+  border: none;
+  border-radius: 100px;
+  background-color: var(--base-color-1);
+
+  text-align: center;
+  font-family: inherit;
+  font-size: 1rem;
+  font-weight: bold;
+}

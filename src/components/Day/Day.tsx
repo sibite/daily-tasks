@@ -1,7 +1,7 @@
 import React from 'react';
 import Page from '../Layout/Page';
 import PageSegment from '../Layout/PageSegment';
-import TasksList from './TasksList';
+import TasksList from './TasksList/TasksList';
 import classes from './Day.module.scss';
 
 const Day: React.FC = () => (

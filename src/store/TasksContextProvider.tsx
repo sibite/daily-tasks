@@ -1,7 +1,7 @@
 import React from 'react';
-import { TasksContext, TasksContextType, TaskUnit } from './TasksContext';
+import { TasksContext, TasksStoreType, TaskUnit } from './TasksContext';
 
-const defaultValue: TasksContextType = {
+const defaultValue: TasksStoreType = {
   list: {
     0: {
       id: 0,
@@ -19,7 +19,7 @@ const defaultValue: TasksContextType = {
       id: 2,
       name: 'Test task',
       unit: TaskUnit.Count,
-      target: 5,
+      target: 10,
     },
     3: {
       id: 3,
@@ -31,13 +31,13 @@ const defaultValue: TasksContextType = {
       id: 4,
       name: 'Test task',
       unit: TaskUnit.Count,
-      target: 5,
+      target: 1,
     },
     5: {
       id: 5,
       name: 'Second task',
       unit: TaskUnit.Timestamp,
-      target: 20 * 60e3,
+      target: 50 * 60e3,
     },
   },
 };

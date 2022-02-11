@@ -1,5 +1,5 @@
 import React from 'react';
-import { TaskUnit } from '../../store/TasksContext';
+import { TaskUnit } from '../../../store/TasksContext';
 import classes from './Task.module.scss';
 
 interface TaskBarProps {
@@ -27,6 +27,7 @@ const TaskBar: React.FC<TaskBarProps> = ({
     currentString = getTimeString(current);
     maxString = getTimeString(max);
   }
+
   return (
     <div className={classes['task__bar-container']}>
       <div className={classes['task__bar-label-container']}>
