@@ -11,8 +11,10 @@ export interface Day {
 
 export interface DaysStoreType {
   days: { [key: DateKeyString]: Day };
+  updateTaskProgress: (dateKeyString: DateKeyString, taskId: number, progress: number) => void;
 }
 
 export const DaysContext = React.createContext<DaysStoreType>({
   days: {},
+  updateTaskProgress: () => {},
 });

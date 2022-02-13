@@ -11,8 +11,10 @@ interface TaskBarProps {
 
 const getTimeString = (timestamp: number) => {
   const time = new Date(timestamp);
+  const overHours = Math.floor(timestamp / 86400e3) * 24;
+  const hours = time.getUTCHours() + overHours;
   let hoursString = '';
-  if (time.getUTCHours() > 0) hoursString += `${time.getUTCHours()} h `;
+  if (hours > 0) hoursString += `${hours} h `;
   return `${hoursString}${time.getUTCMinutes()} min`;
 };
 
@@ -20,8 +22,8 @@ const TaskBar: React.FC<TaskBarProps> = ({
   current, max, color, unit,
 }) => {
   const width = `${100 * (current / max)}%`;
-  let currentString = `${current} ${current > 1 ? 'times' : 'time'}`;
-  let maxString = `${max} ${max > 1 ? 'times' : 'time'}`;
+  let currentString = `${current} ${current !== 1 ? 'times' : 'time'}`;
+  let maxString = `${max} ${max !== 1 ? 'times' : 'time'}`;
 
   if (unit === TaskUnit.Timestamp) {
     currentString = getTimeString(current);

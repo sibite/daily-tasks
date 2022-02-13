@@ -1,15 +1,18 @@
-import React from 'react';
 import { AddFilled, PlayFilled, SubtractFilled } from '@fluentui/react-icons';
-import classes from './TaskForm.module.scss';
+import React from 'react';
 import { TaskUnit } from '../../../store/TasksContext';
 import Button from '../../UI/Button';
+import classes from './TaskForm.module.scss';
 
-interface TaskStatusFormProps {
+interface TaskFormProps {
   unit: TaskUnit;
+  progress?: number;
+  decrementHandler: () => void;
+  incrementHandler: () => void;
 }
 
-const TaskStatusForm: React.FC<TaskStatusFormProps> = ({
-  unit,
+const TaskForm: React.FC<TaskFormProps> = ({
+  unit, progress, decrementHandler, incrementHandler,
 }) => {
   let mainControl;
 
@@ -17,10 +20,11 @@ const TaskStatusForm: React.FC<TaskStatusFormProps> = ({
     mainControl = (
       <input
         className={classes['task__form-input']}
-        type="text"
+        type="number"
         name="task-fill"
         id="task-fill"
-        defaultValue="0"
+        value={progress}
+        readOnly
         step="1"
         min="0"
         max="100"
@@ -29,7 +33,6 @@ const TaskStatusForm: React.FC<TaskStatusFormProps> = ({
   } else {
     mainControl = (
       <Button
-        id="task-fill-timer-switch"
         icon={PlayFilled}
         wide
       />
@@ -39,16 +42,20 @@ const TaskStatusForm: React.FC<TaskStatusFormProps> = ({
   return (
     <form className={classes.task__form}>
       <Button
-        id="task-fill-decrement"
         icon={SubtractFilled}
+        onClick={decrementHandler}
       />
       {mainControl}
       <Button
-        id="task-fill-increment"
         icon={AddFilled}
+        onClick={incrementHandler}
       />
     </form>
   );
 };
 
-export default TaskStatusForm;
+TaskForm.defaultProps = {
+  progress: 0,
+};
+
+export default TaskForm;

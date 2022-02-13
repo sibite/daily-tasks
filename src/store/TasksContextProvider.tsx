@@ -1,8 +1,10 @@
-import React from 'react';
-import { TasksContext, TasksStoreType, TaskUnit } from './TasksContext';
+import React, { useCallback, useMemo, useState } from 'react';
+import {
+  TasksContext, TasksListType, TasksStoreType, TaskUnit,
+} from './TasksContext';
 
-const defaultValue: TasksStoreType = {
-  list: {
+const TasksContextProvider: React.FC = ({ children }) => {
+  const defaultList: TasksListType = {
     0: {
       id: 0,
       name: 'Test task',
@@ -39,11 +41,30 @@ const defaultValue: TasksStoreType = {
       unit: TaskUnit.Timestamp,
       target: 50 * 60e3,
     },
-  },
-};
+  };
 
-const TasksContextProvider: React.FC = ({ children }) => {
-  const value = defaultValue;
+  const [list, setList] = useState(defaultList);
+
+  const updateTask = useCallback((id: number, name: string, target: number, unit: TaskUnit) => {
+    setList((oldList) => {
+      const newList = { ...oldList };
+      const oldTask = oldList[id];
+
+      if (!oldTask) return oldList;
+
+      const updatedTask = {
+        ...oldTask, name, unit, target,
+      };
+
+      newList[id] = updatedTask;
+
+      return newList;
+    });
+  }, []);
+
+  const value = useMemo(() => ({
+    list, updateTask,
+  }), [list, updateTask]);
 
   return (
     <TasksContext.Provider value={value}>

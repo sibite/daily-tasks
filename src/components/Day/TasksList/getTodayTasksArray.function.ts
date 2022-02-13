@@ -2,9 +2,9 @@ import { DaysStoreType } from '../../../store/DaysContext';
 import { Task, TasksStoreType } from '../../../store/TasksContext';
 import getDateKeyString from '../../../utilities/getDateKeyString.function';
 
-type TodayTasksType = { task: Task, progress: number }[];
+export type TodayTasksType = { task: Task, progress: number }[];
 
-function getTodayTasks(tasksCtx: TasksStoreType, daysCtx: DaysStoreType): TodayTasksType {
+function getTodayTasksArray(tasksCtx: TasksStoreType, daysCtx: DaysStoreType): TodayTasksType {
   const today = new Date();
   const todayDateKey = getDateKeyString(today);
   const tasksList = Object.values(tasksCtx.list);
@@ -17,4 +17,4 @@ function getTodayTasks(tasksCtx: TasksStoreType, daysCtx: DaysStoreType): TodayT
   return outputTasks;
 }
 
-export default getTodayTasks;
+export default getTodayTasksArray;

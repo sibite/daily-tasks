@@ -4,5 +4,8 @@
   "files.eol": "\n",
   "editor.codeActionsOnSave": {
     "source.fixAll.eslint": true
+  },
+  "[scss]": {
+    "editor.defaultFormatter": "HookyQR.beautify"
   }
 }

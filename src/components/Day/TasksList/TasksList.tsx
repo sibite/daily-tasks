@@ -1,31 +1,63 @@
-import React, { useContext } from 'react';
-import { DaysContext } from '../../../store/DaysContext';
-import { TasksContext } from '../../../store/TasksContext';
-import getTodayTasks from './getTodayTasks.function';
+import React, { useContext, useState } from 'react';
+import { TasksContext, TaskUnit } from '../../../store/TasksContext';
+import { TodayTasksType } from './getTodayTasksArray.function';
 import Task from './Task';
+import TaskEdit from './TaskEdit';
 import classes from './TasksList.module.scss';
 
-const TasksList: React.FC = () => {
-  const daysCtx = useContext(DaysContext);
+interface TasksListProps {
+  items: TodayTasksType
+}
+
+const TasksList: React.FC<TasksListProps> = ({ items }) => {
+  const [editedTaskId, setEditedTaskId] = useState<number | null>(null);
   const tasksCtx = useContext(TasksContext);
 
-  const todayTasksList = getTodayTasks(tasksCtx, daysCtx);
+  const editSaveHandler = (name: string, target: number, unit: TaskUnit) => {
+    if (editedTaskId === null || editedTaskId < 0) return;
+    tasksCtx.updateTask(editedTaskId, name, target, unit);
+    setEditedTaskId(null);
+  };
 
-  const tasks = todayTasksList.map(({ task, progress }, index) => (
-    <Task
-      key={task.id}
-      name={task.name}
-      unit={task.unit}
-      progress={progress}
-      target={task.target}
-      color={`hsl(${(220 + index * 145) % 360}, 70%, 50%)`}
-    />
-  ));
+  const editStartHandler = (taskId: number) => {
+    setEditedTaskId(taskId);
+  };
+
+  const editCancelHandler = () => {
+    setEditedTaskId(null);
+  };
+
+  const tasks = items.map(({ task, progress }, index) => {
+    if (task.id !== editedTaskId) {
+      return (
+        <Task
+          id={task.id}
+          key={task.id}
+          name={task.name}
+          unit={task.unit}
+          progress={progress}
+          target={task.target}
+          onEditStart={editStartHandler}
+          color={`hsl(${(220 + index * 145) % 360}, 70%, 50%)`}
+        />
+      );
+    }
+    return (
+      <TaskEdit
+        key={task.id}
+        onSave={editSaveHandler}
+        onCancel={editCancelHandler}
+        name={task.name}
+        target={task.target}
+        unit={task.unit}
+      />
+    );
+  });
 
   return (
-    <ul className={classes['tasks-list']}>
+    <div className={classes['tasks-list']}>
       {tasks}
-    </ul>
+    </div>
   );
 };
 
