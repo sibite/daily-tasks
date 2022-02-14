@@ -1,5 +1,6 @@
 import React, { useCallback, useMemo, useState } from 'react';
 import {
+  Task,
   TasksContext, TasksListType, TasksStoreType, TaskUnit,
 } from './TasksContext';
 
@@ -9,37 +10,43 @@ const TasksContextProvider: React.FC = ({ children }) => {
       id: 0,
       name: 'Test task',
       unit: TaskUnit.Count,
-      target: 5,
+      count: 5,
+      timestamp: 60e3,
     },
     1: {
       id: 1,
       name: 'Second task',
       unit: TaskUnit.Timestamp,
-      target: 130 * 60e3,
+      count: 1,
+      timestamp: 130 * 60e3,
     },
     2: {
       id: 2,
       name: 'Test task',
       unit: TaskUnit.Count,
-      target: 10,
+      count: 10,
+      timestamp: 60e3,
     },
     3: {
       id: 3,
       name: 'Second task',
       unit: TaskUnit.Timestamp,
-      target: 20 * 60e3,
+      count: 1,
+      timestamp: 20 * 60e3,
     },
     4: {
       id: 4,
       name: 'Test task',
       unit: TaskUnit.Count,
-      target: 1,
+      count: 1,
+      timestamp: 60e3,
     },
     5: {
       id: 5,
       name: 'Second task',
       unit: TaskUnit.Timestamp,
-      target: 50 * 60e3,
+      count: 1,
+      timestamp: 50 * 60e3,
     },
   };
 
@@ -48,15 +55,22 @@ const TasksContextProvider: React.FC = ({ children }) => {
   const updateTask = useCallback((id: number, name: string, target: number, unit: TaskUnit) => {
     setList((oldList) => {
       const newList = { ...oldList };
-      const oldTask = oldList[id];
+      const oldTask: Task = oldList[id];
 
       if (!oldTask) return oldList;
+      let updatedTask: Partial<Task> = {};
 
-      const updatedTask = {
-        ...oldTask, name, unit, target,
-      };
+      if (unit === TaskUnit.Count) {
+        updatedTask = {
+          ...oldTask, name, unit, count: target,
+        };
+      } else {
+        updatedTask = {
+          ...oldTask, name, unit, timestamp: target,
+        };
+      }
 
-      newList[id] = updatedTask;
+      newList[id] = updatedTask as Task;
 
       return newList;
     });

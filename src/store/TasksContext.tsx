@@ -6,7 +6,8 @@ export interface Task {
   id: number;
   name: string;
   unit: TaskUnit;
-  target: number;
+  count: number;
+  timestamp: number;
 }
 
 export interface TasksListType { [key: number]: Task }

@@ -1,5 +1,7 @@
 import React, { useContext, useState } from 'react';
+import { DaysContext } from '../../../store/DaysContext';
 import { TasksContext, TaskUnit } from '../../../store/TasksContext';
+import getDateKeyString from '../../../utilities/getDateKeyString.function';
 import { TodayTasksType } from './getTodayTasksArray.function';
 import Task from './Task';
 import TaskEdit from './TaskEdit';
@@ -12,10 +14,13 @@ interface TasksListProps {
 const TasksList: React.FC<TasksListProps> = ({ items }) => {
   const [editedTaskId, setEditedTaskId] = useState<number | null>(null);
   const tasksCtx = useContext(TasksContext);
+  const daysCtx = useContext(DaysContext);
 
   const editSaveHandler = (name: string, target: number, unit: TaskUnit) => {
     if (editedTaskId === null || editedTaskId < 0) return;
     tasksCtx.updateTask(editedTaskId, name, target, unit);
+    const todayDateKey = getDateKeyString(new Date());
+    daysCtx.updateTaskUnit(todayDateKey, editedTaskId, unit);
     setEditedTaskId(null);
   };
 
@@ -27,16 +32,18 @@ const TasksList: React.FC<TasksListProps> = ({ items }) => {
     setEditedTaskId(null);
   };
 
-  const tasks = items.map(({ task, progress }, index) => {
+  const tasks = items.map(({ task, progress, unit }, index) => {
+    const target = unit === TaskUnit.Count ? task.count : task.timestamp;
+
     if (task.id !== editedTaskId) {
       return (
         <Task
           id={task.id}
           key={task.id}
           name={task.name}
-          unit={task.unit}
+          unit={unit}
           progress={progress}
-          target={task.target}
+          target={target}
           onEditStart={editStartHandler}
           color={`hsl(${(220 + index * 145) % 360}, 70%, 50%)`}
         />
@@ -48,7 +55,8 @@ const TasksList: React.FC<TasksListProps> = ({ items }) => {
         onSave={editSaveHandler}
         onCancel={editCancelHandler}
         name={task.name}
-        target={task.target}
+        count={task.count}
+        timestamp={task.timestamp}
         unit={task.unit}
       />
     );

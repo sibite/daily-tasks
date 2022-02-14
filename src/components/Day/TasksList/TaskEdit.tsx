@@ -7,7 +7,8 @@ import Card from '../../UI/Card';
 interface TaskEditProps {
   name: string;
   unit: TaskUnit;
-  target: number;
+  count: number;
+  timestamp: number;
   onSave: (name: string, target: number, unit: TaskUnit) => void;
   onCancel: () => void;
 }
@@ -27,23 +28,23 @@ const unitReducer: React.Reducer<StateType<TaskUnit>, TaskUnit> = (_state, newVa
   isValid: Object.values(TaskUnit).indexOf(newValue) !== -1,
 });
 
-interface TargetState {
-  count?: number;
-  hours?: number;
-  minutes?: number;
+const countReducer: React.Reducer<StateType<number>, number> = (_state, newValue) => ({
+  value: newValue,
+  isValid: newValue > 0,
+});
+
+interface TimeState {
+  hours: number;
+  minutes: number;
   isValid?: boolean;
 }
 
-const targetReducer: React.Reducer<TargetState, {
-  type: 'SET_COUNT' | 'SET_HOURS' | 'SET_MINUTES' | 'REFRESH',
+const timeReducer: React.Reducer<TimeState, {
+  type: 'SET_HOURS' | 'SET_MINUTES' | 'REFRESH',
   value: number,
 }> = (state, action) => {
-  let newState: TargetState = {};
-  if (action.type === 'SET_COUNT') {
-    newState = {
-      count: action.value,
-    };
-  } else if (action.type === 'SET_HOURS') {
+  let newState: TimeState = { ...state };
+  if (action.type === 'SET_HOURS') {
     newState = {
       hours: action.value,
       minutes: state.minutes,
@@ -57,32 +58,34 @@ const targetReducer: React.Reducer<TargetState, {
     newState = { ...state };
   }
 
-  newState.isValid = (newState.hours !== undefined && newState.minutes !== undefined
+  newState.isValid = newState.hours !== undefined && newState.minutes !== undefined
   && newState.minutes >= 0 && newState.hours < 24
-  && (newState.minutes ?? 0) > 0 && (newState.minutes ?? 0) < 60)
-  || (newState.count !== undefined && newState.count > 0);
+  && (newState.minutes ?? 0) > 0 && (newState.minutes ?? 0) < 60;
 
   return newState;
 };
 
 const TaskEdit: React.FC<TaskEditProps> = ({
-  name: initialName, unit: initialUnit, target: initialTarget, onSave, onCancel,
+  name: initialName,
+  unit: initialUnit,
+  count: initialCount,
+  timestamp: initialTimestamp,
+  onSave,
+  onCancel,
 }) => {
-  const [name, setName] = useReducer(nameReducer, { value: initialName });
-  const [unit, setUnit] = useReducer(unitReducer, { value: initialUnit });
-  const [target, dispatchTarget] = useReducer(targetReducer, {
-    count: initialUnit === TaskUnit.Count ? initialTarget : undefined,
-    hours: initialUnit === TaskUnit.Timestamp
-      ? Math.floor((initialTarget / 86400e3)) * 24 + new Date(initialTarget).getUTCHours()
-      : undefined,
-    minutes: initialUnit === TaskUnit.Timestamp ? new Date(initialTarget).getUTCMinutes()
-      : undefined,
+  const [name, setName] = useReducer(nameReducer, { value: initialName, isValid: true });
+  const [unit, setUnit] = useReducer(unitReducer, { value: initialUnit, isValid: true });
+  const [count, setCount] = useReducer(countReducer, { value: initialCount, isValid: true });
+  const [time, dispatchTime] = useReducer(timeReducer, {
+    hours: Math.floor((initialTimestamp / 86400e3)) * 24 + new Date(initialTimestamp).getUTCHours(),
+    minutes: new Date(initialTimestamp).getUTCMinutes(),
+    isValid: true,
   });
 
   useEffect(() => {
     setName(initialName);
     setUnit(initialUnit);
-    dispatchTarget({ type: 'REFRESH', value: 0 });
+    dispatchTime({ type: 'REFRESH', value: 0 });
   }, [initialName, initialUnit]);
 
   const changeNameHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -90,40 +93,33 @@ const TaskEdit: React.FC<TaskEditProps> = ({
   };
 
   const changeTargetHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
-    dispatchTarget({ type: 'SET_COUNT', value: +event.currentTarget.value });
+    setCount(+event.currentTarget.value);
   };
 
   const changeHoursHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
-    dispatchTarget({ type: 'SET_HOURS', value: +event.currentTarget.value });
+    dispatchTime({ type: 'SET_HOURS', value: +event.currentTarget.value });
   };
 
   const changeMinutesHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
-    dispatchTarget({ type: 'SET_MINUTES', value: +event.currentTarget.value });
+    dispatchTime({ type: 'SET_MINUTES', value: +event.currentTarget.value });
   };
 
   const changeUnitHandler = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    const newUnit = +event.currentTarget.value;
-    setUnit(newUnit);
-    if (newUnit === TaskUnit.Count) {
-      dispatchTarget({ type: 'SET_COUNT', value: 1 });
-    } else if (newUnit === TaskUnit.Timestamp) {
-      dispatchTarget({ type: 'SET_HOURS', value: 0 });
-      dispatchTarget({ type: 'SET_MINUTES', value: 10 });
-    }
+    setUnit(+event.currentTarget.value);
   };
 
   const submitFormHandler = (event: React.FormEvent) => {
     event.preventDefault();
-    const isFormValid = target.isValid && unit.isValid && name.isValid;
-    console.log(target, unit, name);
-    let outputTarget: number | false;
+    const isFormValid = count.isValid && time.isValid && unit.isValid && name.isValid;
+    console.log(count, time, unit, name);
+    let outputTarget: number;
     if (!isFormValid) return;
-    if (unit.value === TaskUnit.Count && target.count) {
-      outputTarget = target.count;
-    } else if (target.hours !== undefined && target.minutes !== undefined) {
-      outputTarget = target.hours * 3600e3 + target.minutes * 60e3;
-    } else outputTarget = false;
-    if (outputTarget === false) return;
+
+    if (unit.value === TaskUnit.Count) {
+      outputTarget = count.value;
+    } else if (unit.value === TaskUnit.Timestamp) {
+      outputTarget = time.hours * 3600e3 + time.minutes * 60e3;
+    } else return;
     onSave(name.value, outputTarget, unit.value);
   };
 
@@ -137,12 +133,12 @@ const TaskEdit: React.FC<TaskEditProps> = ({
         <label htmlFor="task-edit-target">
           <span>Target</span>
           {unit.value === TaskUnit.Count && (
-          <input type="number" id="task-edit-target" value={target.count} onChange={changeTargetHandler} />
+          <input type="number" id="task-edit-target" value={count.value} onChange={changeTargetHandler} />
           )}
           {unit.value === TaskUnit.Timestamp && (
           <>
-            <input type="number" id="task-edit-target-h" value={target.hours} onChange={changeHoursHandler} />
-            <input type="number" id="task-edit-target-m" value={target.minutes} onChange={changeMinutesHandler} />
+            <input type="number" id="task-edit-target-h" value={time.hours} onChange={changeHoursHandler} />
+            <input type="number" id="task-edit-target-m" value={time.minutes} onChange={changeMinutesHandler} />
           </>
           )}
         </label>
