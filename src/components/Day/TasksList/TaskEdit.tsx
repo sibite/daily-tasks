@@ -1,7 +1,5 @@
-import React, {
-  useEffect, useReducer, useRef, useState,
-} from 'react';
-import { TaskUnit } from '../../../store/TasksContext';
+import React, { useEffect, useReducer } from 'react';
+import { TaskUnit } from '../../../store/tasks/tasks-types';
 import Card from '../../UI/Card';
 
 interface TaskEditProps {
@@ -59,8 +57,9 @@ const timeReducer: React.Reducer<TimeState, {
   }
 
   newState.isValid = newState.hours !== undefined && newState.minutes !== undefined
-  && newState.minutes >= 0 && newState.hours < 24
-  && (newState.minutes ?? 0) > 0 && (newState.minutes ?? 0) < 60;
+  && (newState.minutes ?? 0) >= 0 && (newState.minutes ?? 0) < 60
+  && ((newState.hours >= 0 && newState.hours < 24)
+  || (newState.hours === 0 && newState.minutes > 0));
 
   return newState;
 };
@@ -111,7 +110,6 @@ const TaskEdit: React.FC<TaskEditProps> = ({
   const submitFormHandler = (event: React.FormEvent) => {
     event.preventDefault();
     const isFormValid = count.isValid && time.isValid && unit.isValid && name.isValid;
-    console.log(count, time, unit, name);
     let outputTarget: number;
     if (!isFormValid) return;
 

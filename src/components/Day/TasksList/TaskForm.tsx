@@ -1,6 +1,6 @@
 import { AddFilled, PlayFilled, SubtractFilled } from '@fluentui/react-icons';
 import React from 'react';
-import { TaskUnit } from '../../../store/TasksContext';
+import { TaskUnit } from '../../../store/tasks/tasks-types';
 import Button from '../../UI/Button';
 import classes from './TaskForm.module.scss';
 

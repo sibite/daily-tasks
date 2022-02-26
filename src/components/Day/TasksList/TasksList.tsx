@@ -1,6 +1,7 @@
-import React, { useContext, useState } from 'react';
-import { DaysContext } from '../../../store/DaysContext';
-import { TasksContext, TaskUnit } from '../../../store/TasksContext';
+import React, { useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { tasksActions } from '../../../store';
+import { TaskUnit } from '../../../store/tasks/tasks-types';
 import getDateKeyString from '../../../utilities/getDateKeyString.function';
 import { TodayTasksType } from './getTodayTasksArray.function';
 import Task from './Task';
@@ -13,14 +14,17 @@ interface TasksListProps {
 
 const TasksList: React.FC<TasksListProps> = ({ items }) => {
   const [editedTaskId, setEditedTaskId] = useState<number | null>(null);
-  const tasksCtx = useContext(TasksContext);
-  const daysCtx = useContext(DaysContext);
+  const dispatch = useDispatch();
 
   const editSaveHandler = (name: string, target: number, unit: TaskUnit) => {
     if (editedTaskId === null || editedTaskId < 0) return;
-    tasksCtx.updateTask(editedTaskId, name, target, unit);
+    dispatch(tasksActions.updateTask({
+      id: editedTaskId, name, target, unit,
+    }));
     const todayDateKey = getDateKeyString(new Date());
-    daysCtx.updateTaskUnit(todayDateKey, editedTaskId, unit);
+    dispatch(tasksActions.updateDayUnit({
+      dateKeyString: todayDateKey, taskId: editedTaskId, unit,
+    }));
     setEditedTaskId(null);
   };
 

@@ -1,5 +1,5 @@
 import React from 'react';
-import { TaskUnit } from '../../../store/TasksContext';
+import { TaskUnit } from '../../../store/tasks/tasks-types';
 import classes from './Task.module.scss';
 
 interface TaskBarProps {

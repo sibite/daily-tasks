@@ -1,7 +1,8 @@
 import { EditFilled } from '@fluentui/react-icons';
-import React, { useContext } from 'react';
-import { DaysContext } from '../../../store/DaysContext';
-import { TaskUnit } from '../../../store/TasksContext';
+import React from 'react';
+import { useDispatch } from 'react-redux';
+import { tasksActions } from '../../../store';
+import { TaskUnit } from '../../../store/tasks/tasks-types';
 import getDateKeyString from '../../../utilities/getDateKeyString.function';
 import Button from '../../UI/Button';
 import Card from '../../UI/Card';
@@ -22,16 +23,24 @@ interface TaskProps {
 const Task: React.FC<TaskProps> = ({
   id, name, unit, target, progress, color, onEditStart,
 }) => {
-  const daysCtx = useContext(DaysContext);
+  const dispatch = useDispatch();
 
   const incrementHandler = () => {
     const updatedProgress = progress + (unit === TaskUnit.Count ? 1 : 60e3);
-    daysCtx.updateTaskProgress(getDateKeyString(new Date()), id, updatedProgress);
+    dispatch(tasksActions.updateTaskProgress({
+      dateKeyString: getDateKeyString(new Date()),
+      taskId: id,
+      progress: updatedProgress,
+    }));
   };
 
   const decrementHandler = () => {
     const updatedProgress = progress - (unit === TaskUnit.Count ? 1 : 60e3);
-    daysCtx.updateTaskProgress(getDateKeyString(new Date()), id, updatedProgress);
+    dispatch(tasksActions.updateTaskProgress({
+      dateKeyString: getDateKeyString(new Date()),
+      taskId: id,
+      progress: updatedProgress,
+    }));
   };
 
   const editStartHandler = () => {
