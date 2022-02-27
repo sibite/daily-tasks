@@ -1,4 +1,5 @@
 import { EditFilled } from '@fluentui/react-icons';
+import { Moment } from 'moment';
 import React from 'react';
 import { useDispatch } from 'react-redux';
 import { tasksActions } from '../../../store';
@@ -17,18 +18,19 @@ interface TaskProps {
   target: number;
   progress: number;
   color: string;
+  date: Moment;
   onEditStart: (taskId: number) => void;
 }
 
 const Task: React.FC<TaskProps> = ({
-  id, name, unit, target, progress, color, onEditStart,
+  id, name, unit, target, progress, color, date, onEditStart,
 }) => {
   const dispatch = useDispatch();
 
   const incrementHandler = () => {
     const updatedProgress = progress + (unit === TaskUnit.Count ? 1 : 60e3);
     dispatch(tasksActions.updateTaskProgress({
-      dateKeyString: getDateKeyString(new Date()),
+      dateKeyString: getDateKeyString(date.toDate()),
       taskId: id,
       progress: updatedProgress,
     }));
@@ -37,7 +39,7 @@ const Task: React.FC<TaskProps> = ({
   const decrementHandler = () => {
     const updatedProgress = progress - (unit === TaskUnit.Count ? 1 : 60e3);
     dispatch(tasksActions.updateTaskProgress({
-      dateKeyString: getDateKeyString(new Date()),
+      dateKeyString: getDateKeyString(date.toDate()),
       taskId: id,
       progress: updatedProgress,
     }));
@@ -51,7 +53,7 @@ const Task: React.FC<TaskProps> = ({
     <Card className={classes.task}>
       <header className={classes.task__header}>
         <h2>{name}</h2>
-        <Button icon={EditFilled} onClick={editStartHandler} className={classes['task__edit-button']} />
+        <Button icon={EditFilled} onClick={editStartHandler} className={classes['task__edit-button']} freeMargin />
       </header>
       <div className={classes['task__fulfill-container']}>
         <TaskBar max={target} current={progress} color={color} unit={unit} />

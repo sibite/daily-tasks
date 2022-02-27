@@ -1,20 +1,15 @@
 import React from 'react';
 import classes from './Page.module.scss';
 
-interface PageProps {
-  title: string
-}
-
-const Page: React.FC<PageProps> = ({
-  title,
+const Page: React.FC = ({
   children,
 }) => (
   <section className={classes.page}>
     <div className={classes.page__inner}>
-      <h1>{title}</h1>
-      <div className={classes.page__content}>
-        {children}
-      </div>
+      {/* <h1>{title}</h1>
+      <div className={classes.page__content}> */}
+      {children}
+      {/* </div> */}
     </div>
   </section>
 );

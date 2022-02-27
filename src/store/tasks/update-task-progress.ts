@@ -16,11 +16,15 @@ function updateTaskProgress(state: TasksStoreType, action: ActionType) {
   const newDays = newState.days;
 
   const task = state.tasks[taskId];
-  const taskTarget = task.unit === TaskUnit.Count ? task.count : task.timestamp;
-  const validatedProgress = Math.max(Math.min(progress, taskTarget || Infinity), 0);
+  const maxTarget = task.unit === TaskUnit.Timestamp ? 24 * 3600e3 : Infinity;
+  const validatedProgress = Math.max(Math.min(progress, maxTarget), 0);
 
   if (!newDays[dateKeyString]) {
-    newDays[dateKeyString] = { tasks: { [taskId]: { progress: 0, unit: task.unit } } };
+    newDays[dateKeyString] = { tasks: {} };
+  }
+
+  if (!newDays[dateKeyString].tasks[taskId]) {
+    newDays[dateKeyString].tasks[taskId] = { progress: 0, unit: task.unit };
   }
 
   newDays[dateKeyString].tasks[taskId].progress = validatedProgress;

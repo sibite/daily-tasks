@@ -6,18 +6,21 @@ interface ButtonProps {
   className?: string;
   icon: React.FC<FluentIconsProps>;
   wide?: boolean;
+  freeMargin?: boolean;
+  disabled?: boolean;
   onClick?: () => void;
 }
 
 const iconSize = '20px';
 
 const Button: React.FC<ButtonProps> = ({
-  className, icon, wide, onClick,
+  className, icon, wide, freeMargin, disabled, onClick,
 }) => (
   <button
-    className={`${classes.button} ${wide ? classes['button--wide'] : ''} ${className}`}
+    className={`${classes.button} ${wide ? classes['button--wide'] : ''} ${freeMargin ? classes['button--free-margin'] : ''} ${className}`}
     type="button"
     onClick={onClick}
+    disabled={disabled}
   >
     {React.createElement(icon, { width: iconSize, height: iconSize })}
   </button>
@@ -26,6 +29,8 @@ const Button: React.FC<ButtonProps> = ({
 Button.defaultProps = {
   className: '',
   wide: false,
+  freeMargin: false,
+  disabled: false,
   onClick: () => {},
 };
 

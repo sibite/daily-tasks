@@ -1,18 +1,20 @@
+import moment, { Moment } from 'moment';
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { tasksActions } from '../../../store';
 import { TaskUnit } from '../../../store/tasks/tasks-types';
 import getDateKeyString from '../../../utilities/getDateKeyString.function';
-import { TodayTasksType } from './getTodayTasksArray.function';
+import { DayTasksType } from './getDayTasksArray.function';
 import Task from './Task';
 import TaskEdit from './TaskEdit';
 import classes from './TasksList.module.scss';
 
 interface TasksListProps {
-  items: TodayTasksType
+  items: DayTasksType;
+  date: Moment;
 }
 
-const TasksList: React.FC<TasksListProps> = ({ items }) => {
+const TasksList: React.FC<TasksListProps> = ({ items, date }) => {
   const [editedTaskId, setEditedTaskId] = useState<number | null>(null);
   const dispatch = useDispatch();
 
@@ -21,9 +23,9 @@ const TasksList: React.FC<TasksListProps> = ({ items }) => {
     dispatch(tasksActions.updateTask({
       id: editedTaskId, name, target, unit,
     }));
-    const todayDateKey = getDateKeyString(new Date());
+    const dateKey = getDateKeyString(date.toDate());
     dispatch(tasksActions.updateDayUnit({
-      dateKeyString: todayDateKey, taskId: editedTaskId, unit,
+      dateKeyString: dateKey, taskId: editedTaskId, unit,
     }));
     setEditedTaskId(null);
   };
@@ -42,6 +44,7 @@ const TasksList: React.FC<TasksListProps> = ({ items }) => {
     if (task.id !== editedTaskId) {
       return (
         <Task
+          date={date}
           id={task.id}
           key={task.id}
           name={task.name}

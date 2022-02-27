@@ -11,7 +11,8 @@
 }
 
 .task__edit-button {
-  margin-top: -21px;
+  margin-top: -20px;
+  margin-left: 10px;
   display: none;
 }
 
@@ -51,7 +52,7 @@ h2 {
   overflow: hidden;
   height: 14px;
   width: 100%;
-  
+
   background-color: var(--base-color-1);
   border-radius: 100px;
 }

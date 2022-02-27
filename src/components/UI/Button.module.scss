@@ -9,20 +9,25 @@
   width: $size;
   padding: #{($size - 20px) * 0.5};
 
-  &:not(.button--wide) {
-    @include mixins.margin-gap-horizontal(10px);
+  &:not(&--free-margin) {
+    @include mixins.margin-gap-horizontal(5px);
   }
 
   border: none;
   border-radius: 100%;
   background-color: var(--base-color-1);
-  
+
   color: #000;
   text-align: center;
   transition: all sizes.$common-transition-time ease;
 
-  &:active {
+  &:active:not(:disabled) {
     background-color: var(--button-active-color);
+  }
+
+  &:disabled {
+    cursor: default;
+    opacity: 0.5;
   }
 }
 

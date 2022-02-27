@@ -17,11 +17,13 @@ function updateDayUnit(
     dateKeyString, taskId, unit,
   } = action.payload;
 
-  if (!newState.days[dateKeyString]) return newState;
+  if (!newState.days[dateKeyString]?.tasks[taskId]) return newState;
 
   const taskEntry = newState.days[dateKeyString].tasks[taskId];
 
-  taskEntry.progress = 0;
+  if (taskEntry.unit !== unit) {
+    taskEntry.progress = 0;
+  }
   taskEntry.unit = unit;
 
   return newState;
