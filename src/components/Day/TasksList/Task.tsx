@@ -1,6 +1,8 @@
 import { EditFilled } from '@fluentui/react-icons';
 import { Moment } from 'moment';
-import React from 'react';
+import React, {
+  ChangeEvent, useCallback, useEffect, useState,
+} from 'react';
 import { useDispatch } from 'react-redux';
 import { tasksActions } from '../../../store';
 import { TaskUnit } from '../../../store/tasks/tasks-types';
@@ -45,9 +47,39 @@ const Task: React.FC<TaskProps> = ({
     }));
   };
 
+  const updateProgressHandler = useCallback((updatedProgress: number) => {
+    dispatch(tasksActions.updateTaskProgress({
+      dateKeyString: getDateKeyString(date.toDate()),
+      taskId: id,
+      progress: updatedProgress,
+    }));
+  }, [dispatch, date, id]);
+
   const editStartHandler = () => {
     onEditStart(id);
   };
+
+  const [isPlaying, setIsPlaying] = useState<boolean>(false);
+  const [intervalId, setIntervalId] = useState<ReturnType<typeof setInterval>>();
+
+  useEffect(() => {
+    if (!isPlaying) return () => {};
+
+    const addSecondToProgress = () => {
+      updateProgressHandler((progress ?? 0) + 1000);
+    };
+
+    const timeoutId = setTimeout(addSecondToProgress, 1000);
+
+    return function cleanup() {
+      clearTimeout(timeoutId);
+      // clearInterval(intervalId as ReturnType<typeof setInterval>);
+    };
+  }, [isPlaying, intervalId, updateProgressHandler, progress]);
+
+  const playHandler = () => setIsPlaying(true);
+
+  const stopHandler = () => setIsPlaying(false);
 
   return (
     <Card className={classes.task}>
@@ -56,12 +88,22 @@ const Task: React.FC<TaskProps> = ({
         <Button icon={EditFilled} onClick={editStartHandler} className={classes['task__edit-button']} freeMargin />
       </header>
       <div className={classes['task__fulfill-container']}>
-        <TaskBar max={target} current={progress} color={color} unit={unit} />
+        <TaskBar
+          max={target}
+          current={progress}
+          color={color}
+          unit={unit}
+          onUpdateProgress={updateProgressHandler}
+        />
         <TaskForm
           unit={unit}
           progress={progress}
           decrementHandler={decrementHandler}
           incrementHandler={incrementHandler}
+          onUpdateProgress={updateProgressHandler}
+          onPlay={playHandler}
+          onStop={stopHandler}
+          isPlaying={isPlaying}
         />
       </div>
     </Card>

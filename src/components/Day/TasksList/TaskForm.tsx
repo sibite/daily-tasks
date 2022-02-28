@@ -1,5 +1,7 @@
-import { AddFilled, PlayFilled, SubtractFilled } from '@fluentui/react-icons';
-import React from 'react';
+import {
+  AddFilled, PlayFilled, StopFilled, SubtractFilled,
+} from '@fluentui/react-icons';
+import React, { ChangeEvent, useEffect, useState } from 'react';
 import { TaskUnit } from '../../../store/tasks/tasks-types';
 import Button from '../../UI/Button';
 import classes from './TaskForm.module.scss';
@@ -9,12 +11,20 @@ interface TaskFormProps {
   progress?: number;
   decrementHandler: () => void;
   incrementHandler: () => void;
+  onPlay: () => void;
+  onStop: () => void;
+  onUpdateProgress: (progress: number) => void;
+  isPlaying: boolean;
 }
 
 const TaskForm: React.FC<TaskFormProps> = ({
-  unit, progress, decrementHandler, incrementHandler,
+  unit, progress, decrementHandler, incrementHandler, onPlay, onStop, isPlaying, onUpdateProgress,
 }) => {
   let mainControl;
+
+  const countChangeHandler = (event: ChangeEvent<HTMLInputElement>) => {
+    onUpdateProgress(+event.target.value);
+  };
 
   if (unit === TaskUnit.Count) {
     mainControl = (
@@ -24,7 +34,7 @@ const TaskForm: React.FC<TaskFormProps> = ({
         name="task-fill"
         id="task-fill"
         value={progress}
-        readOnly
+        onChange={countChangeHandler}
         step="1"
         min="0"
         max="100"
@@ -33,7 +43,8 @@ const TaskForm: React.FC<TaskFormProps> = ({
   } else {
     mainControl = (
       <Button
-        icon={PlayFilled}
+        icon={isPlaying ? StopFilled : PlayFilled}
+        onClick={isPlaying ? onStop : onPlay}
         wide
       />
     );
@@ -44,6 +55,7 @@ const TaskForm: React.FC<TaskFormProps> = ({
       <Button
         icon={SubtractFilled}
         onClick={decrementHandler}
+        disabled={progress === 0}
       />
       {mainControl}
       <Button

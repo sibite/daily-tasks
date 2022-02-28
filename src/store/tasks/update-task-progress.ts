@@ -17,7 +17,7 @@ function updateTaskProgress(state: TasksStoreType, action: ActionType) {
 
   const task = state.tasks[taskId];
   const maxTarget = task.unit === TaskUnit.Timestamp ? 24 * 3600e3 : Infinity;
-  const validatedProgress = Math.max(Math.min(progress, maxTarget), 0);
+  const validatedProgress = Math.round(Math.max(Math.min(progress, maxTarget), 0));
 
   if (!newDays[dateKeyString]) {
     newDays[dateKeyString] = { tasks: {} };

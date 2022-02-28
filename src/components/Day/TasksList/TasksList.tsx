@@ -1,4 +1,4 @@
-import moment, { Moment } from 'moment';
+import { Moment } from 'moment';
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { tasksActions } from '../../../store';
@@ -18,12 +18,13 @@ const TasksList: React.FC<TasksListProps> = ({ items, date }) => {
   const [editedTaskId, setEditedTaskId] = useState<number | null>(null);
   const dispatch = useDispatch();
 
+  const dateKey = getDateKeyString(date.toDate());
+
   const editSaveHandler = (name: string, target: number, unit: TaskUnit) => {
     if (editedTaskId === null || editedTaskId < 0) return;
     dispatch(tasksActions.updateTask({
       id: editedTaskId, name, target, unit,
     }));
-    const dateKey = getDateKeyString(date.toDate());
     dispatch(tasksActions.updateDayUnit({
       dateKeyString: dateKey, taskId: editedTaskId, unit,
     }));
@@ -46,7 +47,7 @@ const TasksList: React.FC<TasksListProps> = ({ items, date }) => {
         <Task
           date={date}
           id={task.id}
-          key={task.id}
+          key={`${dateKey}_${task.id}`}
           name={task.name}
           unit={unit}
           progress={progress}
