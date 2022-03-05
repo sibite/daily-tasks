@@ -1,0 +1,31 @@
+@use '../../styles/sizes';
+@use '../../styles/mixins';
+
+.task-item {
+  cursor: pointer;
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+  color: var(--base-text-color-1);
+}
+
+.task-item:hover .task-item__edit-button {
+  display: block;
+}
+
+.task-item__bar {
+  width: 10px;
+  margin-right: 10px;
+
+  background-color: var(--base-color-4);
+  border-radius: 100px;
+}
+
+.task-item__header {
+  flex-grow: 1;
+}
+
+h2 {
+  margin: 0;
+  font-size: 1.1rem;
+}

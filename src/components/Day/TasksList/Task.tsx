@@ -1,8 +1,6 @@
 import { EditFilled } from '@fluentui/react-icons';
 import { Moment } from 'moment';
-import React, {
-  ChangeEvent, useCallback, useEffect, useState,
-} from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { tasksActions } from '../../../store';
 import { TaskUnit } from '../../../store/tasks/tasks-types';
@@ -60,7 +58,6 @@ const Task: React.FC<TaskProps> = ({
   };
 
   const [isPlaying, setIsPlaying] = useState<boolean>(false);
-  const [intervalId, setIntervalId] = useState<ReturnType<typeof setInterval>>();
 
   useEffect(() => {
     if (!isPlaying) return () => {};
@@ -73,9 +70,8 @@ const Task: React.FC<TaskProps> = ({
 
     return function cleanup() {
       clearTimeout(timeoutId);
-      // clearInterval(intervalId as ReturnType<typeof setInterval>);
     };
-  }, [isPlaying, intervalId, updateProgressHandler, progress]);
+  }, [isPlaying, updateProgressHandler, progress]);
 
   const playHandler = () => setIsPlaying(true);
 

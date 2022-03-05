@@ -4,9 +4,9 @@ import NavigationItem from './NavigationItem';
 
 const Navigation: React.FC = () => (
   <div className={classes.navigation}>
-    <NavigationItem title="Today" />
-    <NavigationItem title="Calendar" />
-    <NavigationItem title="Add task" />
+    <NavigationItem href="/day" title="Today" />
+    <NavigationItem href="/calendar" title="Calendar" />
+    <NavigationItem href="/day" title="Add task" />
   </div>
 );
 

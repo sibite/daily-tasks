@@ -47,6 +47,8 @@ const Day: React.FC = () => {
           />
           <h2>{dateString}</h2>
         </header>
+      </PageSegment>
+      <PageSegment>
         <TasksList items={DayTasks} date={dayDate} />
       </PageSegment>
     </Page>

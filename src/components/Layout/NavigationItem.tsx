@@ -1,16 +1,18 @@
 import React from 'react';
+import { Link, NavLink } from 'react-router-dom';
 import classes from './NavigationItem.module.scss';
 
 interface NavigationItemProps {
   title: string;
+  href: string;
 }
 
 const NavigationItem: React.FC<NavigationItemProps> = ({
-  title,
+  title, href,
 }) => (
-  <button type="button" className={classes.navigation__item}>
+  <NavLink to={href} className={classes.navigation__item}>
     {title}
-  </button>
+  </NavLink>
 );
 
 export default NavigationItem;

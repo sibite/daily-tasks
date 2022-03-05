@@ -4,6 +4,7 @@ import { useDispatch } from 'react-redux';
 import { tasksActions } from '../../../store';
 import { TaskUnit } from '../../../store/tasks/tasks-types';
 import getDateKeyString from '../../../utilities/getDateKeyString.function';
+import getTaskColor from '../../../utilities/getTaskColor';
 import { DayTasksType } from './getDayTasksArray.function';
 import Task from './Task';
 import TaskEdit from './TaskEdit';
@@ -53,7 +54,7 @@ const TasksList: React.FC<TasksListProps> = ({ items, date }) => {
           progress={progress}
           target={target}
           onEditStart={editStartHandler}
-          color={`hsl(${(220 + index * 145) % 360}, 70%, 50%)`}
+          color={getTaskColor(index)}
         />
       );
     }

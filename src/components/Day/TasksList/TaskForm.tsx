@@ -1,7 +1,7 @@
 import {
-  AddFilled, PlayFilled, StopFilled, SubtractFilled,
+  AddFilled, PauseFilled, PlayFilled, SubtractFilled,
 } from '@fluentui/react-icons';
-import React, { ChangeEvent, useEffect, useState } from 'react';
+import React, { ChangeEvent } from 'react';
 import { TaskUnit } from '../../../store/tasks/tasks-types';
 import Button from '../../UI/Button';
 import classes from './TaskForm.module.scss';
@@ -43,7 +43,7 @@ const TaskForm: React.FC<TaskFormProps> = ({
   } else {
     mainControl = (
       <Button
-        icon={isPlaying ? StopFilled : PlayFilled}
+        icon={isPlaying ? PauseFilled : PlayFilled}
         onClick={isPlaying ? onStop : onPlay}
         wide
       />
