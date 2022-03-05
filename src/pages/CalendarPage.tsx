@@ -50,7 +50,7 @@ const CalendarPage: React.FC = () => {
         </PageSegment>
       </PageSegment>
       <PageSegment>
-        <Calendar />
+        <Calendar monthDate={monthDate} />
       </PageSegment>
     </Page>
   );
