@@ -7,6 +7,11 @@
   flex-direction: row;
   align-items: stretch;
   color: var(--base-text-color-1);
+
+  h2 {
+    margin: 0;
+    font-size: 1.1rem;
+  }
 }
 
 .task-item:hover .task-item__edit-button {
@@ -23,9 +28,4 @@
 
 .task-item__header {
   flex-grow: 1;
-}
-
-h2 {
-  margin: 0;
-  font-size: 1.1rem;
 }

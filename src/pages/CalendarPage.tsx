@@ -11,13 +11,18 @@ import TaskPicker from '../components/TaskPicker/TaskPicker';
 import Calendar from '../components/Calendar/Calendar';
 
 const CalendarPage: React.FC = () => {
-  const thisMonth = moment().startOf('month');
-  const [monthDate, setDayDate] = useState(thisMonth);
-
-  const canForward = monthDate.clone().add(1, 'months').isSameOrBefore(thisMonth);
-
   const tasksState = useSelector((state: RootState) => state.tasks.tasks);
   const daysState = useSelector((state: RootState) => state.tasks.days);
+
+  const thisMonth = moment().startOf('month');
+  const firstTaskId = Object.values(tasksState)[0].id;
+
+  const [monthDate, setDayDate] = useState(thisMonth);
+  const [taskId, setTaskId] = useState(firstTaskId);
+
+  const chooseTaskHandler = setTaskId;
+
+  const canForward = monthDate.clone().add(1, 'months').isSameOrBefore(thisMonth);
 
   const dateString = monthDate.format('MMMM YYYY');
 
@@ -50,7 +55,7 @@ const CalendarPage: React.FC = () => {
         </PageSegment>
       </PageSegment>
       <PageSegment>
-        <Calendar monthDate={monthDate} />
+        <Calendar monthDate={monthDate} taskId={taskId} />
       </PageSegment>
     </Page>
   );

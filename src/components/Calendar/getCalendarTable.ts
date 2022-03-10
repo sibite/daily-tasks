@@ -1,12 +1,20 @@
 import { Moment } from 'moment';
 
-function getDayNumber(date: Moment, monthStart: Moment): number | null {
-  const monthEnd = monthStart.clone().endOf('month');
-  if (date.isBefore(monthStart) || date.isAfter(monthEnd)) return null;
-  return date.get('date');
+export interface MonthDayType {
+  date: Moment;
+  dateNumber: number;
 }
 
-function getWeekTable(date: Moment, monthStart: Moment): (number | null)[] {
+function getDayNumber(date: Moment, monthStart: Moment): MonthDayType | null {
+  const monthEnd = monthStart.clone().endOf('month');
+  if (date.isBefore(monthStart) || date.isAfter(monthEnd)) return null;
+  return {
+    date,
+    dateNumber: date.get('date'),
+  };
+}
+
+function getWeekTable(date: Moment, monthStart: Moment): (MonthDayType | null)[] {
   const weekStart = date.clone().startOf('isoWeek');
 
   const weekTable = new Array(7).fill(null).map((_, index) => getDayNumber(
@@ -16,17 +24,17 @@ function getWeekTable(date: Moment, monthStart: Moment): (number | null)[] {
   return weekTable;
 }
 
-function getCalendarTable(date: Moment): (number | null)[][] {
+function getCalendarTable(date: Moment): (MonthDayType | null)[][] {
   const monthStart = date.clone().startOf('month');
   const calendarTable = [];
   const currentDate = monthStart.clone();
-  let weekTable;
 
-  do {
-    weekTable = getWeekTable(currentDate, monthStart);
+  while (true) {
+    const weekTable = getWeekTable(currentDate, monthStart);
+    if (weekTable[0] === null && weekTable[6] === null) break;
     calendarTable.push(weekTable);
     currentDate.add(1, 'week');
-  } while (weekTable[6] !== null);
+  }
 
   return calendarTable;
 }

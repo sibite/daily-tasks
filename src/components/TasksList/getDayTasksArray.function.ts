@@ -1,7 +1,7 @@
 import {
   DaysListType, Task, TasksListType, TaskUnit,
-} from '../../../store/tasks/tasks-types';
-import getDateKeyString from '../../../utilities/getDateKeyString.function';
+} from '../../store/tasks/tasks-types';
+import getDateKeyString from '../../utilities/getDateKeyString.function';
 
 export type DayTasksType = { task: Task, progress: number, unit: TaskUnit }[];
 

@@ -29,5 +29,11 @@ module.exports = {
         namedComponents: 'arrow-function',
       },
     ],
+    'no-constant-condition': [
+      1,
+      {
+        checkLoops: false,
+      },
+    ],
   },
 };

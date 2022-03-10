@@ -2,15 +2,15 @@ import React, { useState } from 'react';
 import moment from 'moment';
 import { ArrowLeftFilled, ArrowRightFilled } from '@fluentui/react-icons';
 import { useSelector } from 'react-redux';
-import { RootState } from '../../store';
+import { RootState } from '../store';
 
-import Page from '../Layout/Page';
-import PageSegment from '../Layout/PageSegment';
-import TasksList from './TasksList/TasksList';
-import Button from '../UI/Button';
+import Page from '../components/Layout/Page';
+import PageSegment from '../components/Layout/PageSegment';
+import TasksList from '../components/TasksList/TasksList';
+import Button from '../components/UI/Button';
 
-import getDayTasksArray from './TasksList/getDayTasksArray.function';
-import classes from './Day.module.scss';
+import getDayTasksArray from '../components/TasksList/getDayTasksArray.function';
+import classes from './DayPage.module.scss';
 
 const Day: React.FC = () => {
   const today = moment().startOf('day');

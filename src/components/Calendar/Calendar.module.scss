@@ -1,0 +1,67 @@
+@use '../../styles/sizes';
+
+.calendar {
+  $cell-width: 80px;
+  $cell-height: 80px;
+
+  thead td {
+    text-align: center;
+  }
+
+  &__table {
+    border-spacing: 6px;
+  }
+
+  &__cell {
+    padding: 0px;
+  }
+
+  &__cell-card {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-end;
+    overflow: hidden;
+    width: $cell-width;
+    height: $cell-height;
+    padding: 0px;
+
+    color: white;
+    font-weight: bold;
+    text-align: center;
+
+    &--empty {
+      opacity: 0.4;
+    }
+
+    &--empty &__cell-bg {
+      background-color: var(--base-color-1-contrast);
+    }
+  }
+
+  &__cell-bg {
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    position: absolute;
+    background-color: var(--task-color);
+    opacity: var(--fill);
+  }
+
+  &__cell-label {
+    box-sizing: border-box;
+    width: 30px;
+    line-height: 22px;
+    padding: 4px;
+    z-index: 1;
+
+    font-size: 1rem;
+
+    border-bottom-left-radius: sizes.$border-radius;
+    background-color: var(--base-color-4);
+    text-align: center;
+    color: black;
+  }
+}

@@ -1,10 +1,10 @@
 import { Moment } from 'moment';
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { tasksActions } from '../../../store';
-import { TaskUnit } from '../../../store/tasks/tasks-types';
-import getDateKeyString from '../../../utilities/getDateKeyString.function';
-import getTaskColor from '../../../utilities/getTaskColor';
+import { tasksActions } from '../../store';
+import { TaskUnit } from '../../store/tasks/tasks-types';
+import getDateKeyString from '../../utilities/getDateKeyString.function';
+import getTaskColor from '../../utilities/getTaskColor';
 import { DayTasksType } from './getDayTasksArray.function';
 import Task from './Task';
 import TaskEdit from './TaskEdit';

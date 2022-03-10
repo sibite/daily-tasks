@@ -1,5 +1,5 @@
 import React, { PointerEvent, useRef, useState } from 'react';
-import { TaskUnit } from '../../../store/tasks/tasks-types';
+import { TaskUnit } from '../../store/tasks/tasks-types';
 import classes from './Task.module.scss';
 
 interface TaskBarProps {

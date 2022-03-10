@@ -1,5 +1,5 @@
-@use '../../../styles/sizes';
-@use '../../../styles/mixins';
+@use '../../styles/sizes';
+@use '../../styles/mixins';
 
 .task:hover .task__edit-button {
   display: block;

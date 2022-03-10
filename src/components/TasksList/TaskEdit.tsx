@@ -1,6 +1,6 @@
 import React, { useEffect, useReducer } from 'react';
-import { TaskUnit } from '../../../store/tasks/tasks-types';
-import Card from '../../UI/Card';
+import { TaskUnit } from '../../store/tasks/tasks-types';
+import Card from '../UI/Card';
 
 interface TaskEditProps {
   name: string;
