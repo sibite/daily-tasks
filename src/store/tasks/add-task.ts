@@ -1,4 +1,5 @@
 import { ActionWithPayload } from '../utils';
+import saveStoreToLocalStorage from './saveStoreToLocalStorage.function';
 import { TasksStoreType, TaskUnit } from './tasks-types';
 
 type ActionType = ActionWithPayload<{
@@ -13,7 +14,7 @@ function addTask(state: TasksStoreType, action: ActionType) {
   } = action.payload;
   const newState = state;
   const existingIds = Object.keys(state.tasks).map((key) => Number(key));
-  const id = Math.max(...existingIds) + 1;
+  const id = Math.max(...existingIds, 0) + 1;
 
   const targetKey = unit === TaskUnit.Count ? 'count' : 'timestamp';
   const newTask = {
@@ -22,6 +23,7 @@ function addTask(state: TasksStoreType, action: ActionType) {
   newTask[targetKey] = target;
   newState.tasks[id] = newTask;
 
+  saveStoreToLocalStorage(newState);
   return newState;
 }
 

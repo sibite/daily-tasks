@@ -1,4 +1,5 @@
 import { ActionWithPayload } from '../utils';
+import saveStoreToLocalStorage from './saveStoreToLocalStorage.function';
 import { Task, TasksStoreType, TaskUnit } from './tasks-types';
 
 type ActionType = ActionWithPayload<{
@@ -24,6 +25,7 @@ function updateTask(state: TasksStoreType, action: ActionType) {
 
   newState.tasks[id] = updatedTask;
 
+  saveStoreToLocalStorage(newState);
   return newState;
 }
 

@@ -21,7 +21,7 @@
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
-    align-items: flex-end;
+    align-items: flex-start;
     overflow: hidden;
     width: $cell-width;
     height: $cell-height;
@@ -60,15 +60,15 @@
 
   &__cell-label {
     box-sizing: border-box;
-    width: 30px;
-    line-height: 22px;
-    padding: 4px;
     z-index: 1;
+    width: 26px;
+    line-height: 14px;
+    margin: 4px;
+    padding: 4px;
+    border-radius: sizes.$border-radius;
+    background-color: var(--base-color-4);
 
     font-size: 1rem;
-
-    border-bottom-left-radius: sizes.$border-radius;
-    background-color: var(--base-color-4);
     text-align: center;
     color: black;
 

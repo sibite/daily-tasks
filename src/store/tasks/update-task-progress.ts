@@ -1,5 +1,6 @@
 import { DateKeyString } from '../../utilities/getDateKeyString.function';
 import { ActionWithPayload } from '../utils';
+import saveStoreToLocalStorage from './saveStoreToLocalStorage.function';
 import { TasksStoreType, TaskUnit } from './tasks-types';
 
 type ActionType = ActionWithPayload<{
@@ -29,6 +30,7 @@ function updateTaskProgress(state: TasksStoreType, action: ActionType) {
 
   newDays[dateKeyString].tasks[taskId].progress = validatedProgress;
 
+  saveStoreToLocalStorage(newState);
   return state;
 }
 

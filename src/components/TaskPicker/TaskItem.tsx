@@ -19,7 +19,7 @@ const TaskItem: React.FC<PropsType> = ({
   const taskColor = getTaskColor(index);
 
   const pickHandler = () => {
-    onPick(index);
+    onPick(task.id);
   };
 
   return (
