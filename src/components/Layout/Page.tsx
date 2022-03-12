@@ -18,15 +18,15 @@ const Page: React.FC<PageProps> = ({
 }) => {
   const contextValue = useMemo(() => ({ type }), [type]);
 
-  let className = classes.page__inner;
+  let className = classes.page;
   if (type === 'horizontal') {
-    className = [classes.page__inner, classes['page__inner--horizontal']].join(' ');
+    className = [classes.page, classes['page--horizontal']].join(' ');
   }
 
   return (
     <PageContext.Provider value={contextValue}>
-      <section className={classes.page}>
-        <div className={className}>
+      <section className={className}>
+        <div className={classes.page__inner}>
           {children}
         </div>
       </section>

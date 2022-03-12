@@ -1,22 +1,27 @@
 .page {
   box-sizing: border-box;
-  padding: 40px 40px;
+  padding: 40px;
   margin-bottom: 50px;
   display: flex;
   justify-content: center;
-}
 
-.page__inner {
-  box-sizing: border-box;
-  width: 800px;
-  max-width: 100%;
-}
+  &__inner {
+    box-sizing: border-box;
+    width: 800px;
+    max-width: 100%;
+  }
 
-.page__inner--horizontal {
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  &--horizontal {
+    padding: 15px;
+  }
+
+  &--horizontal &__inner {
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+  }
 }
 
 .page__content {

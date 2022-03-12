@@ -1,6 +1,11 @@
 import React, { useEffect, useReducer } from 'react';
 import { TaskUnit } from '../../store/tasks/tasks-types';
+import Button from '../UI/Button';
 import Card from '../UI/Card';
+import Input from '../UI/Input';
+import InputToolbar from '../UI/InputToolbar';
+import Select from '../UI/Select';
+import classes from './Task.module.scss';
 
 interface TaskEditProps {
   name: string;
@@ -124,30 +129,24 @@ const TaskEdit: React.FC<TaskEditProps> = ({
   return (
     <Card>
       <form onSubmit={submitFormHandler}>
-        <label htmlFor="task-edit-name">
-          <span>Name</span>
-          <input type="text" id="task-edit-name" value={name.value} onChange={changeNameHandler} />
-        </label>
-        <label htmlFor="task-edit-target">
-          <span>Target</span>
-          {unit.value === TaskUnit.Count && (
-          <input type="number" id="task-edit-target" value={count.value} onChange={changeTargetHandler} />
-          )}
-          {unit.value === TaskUnit.Timestamp && (
-          <>
-            <input type="number" id="task-edit-target-h" value={time.hours} onChange={changeHoursHandler} />
-            <input type="number" id="task-edit-target-m" value={time.minutes} onChange={changeMinutesHandler} />
-          </>
-          )}
-        </label>
-        <label htmlFor="task-edit-unit">
-          <select id="task-edit-unit" value={unit.value} onChange={changeUnitHandler}>
-            <option value={TaskUnit.Count}>Count</option>
-            <option value={TaskUnit.Timestamp}>Time</option>
-          </select>
-        </label>
-        <button type="submit">Save</button>
-        <button type="button" onClick={onCancel}>Cancel</button>
+        <Input type="text" id="task-edit-name" label="Name" value={name.value} onChange={changeNameHandler} onBlur={() => true} />
+        <Select label="Unit" id="task-edit-unit" value={unit.value} onChange={changeUnitHandler}>
+          <option value={TaskUnit.Count}>Count</option>
+          <option value={TaskUnit.Timestamp}>Time</option>
+        </Select>
+        {unit.value === TaskUnit.Count && (
+          <Input type="number" id="task-edit-target" label="Target" value={count.value} onChange={changeTargetHandler} onBlur={() => true} />
+        )}
+        {unit.value === TaskUnit.Timestamp && (
+        <InputToolbar>
+          <Input type="number" id="task-edit-target-h" label="Hours" value={time.hours} onChange={changeHoursHandler} onBlur={() => true} />
+          <Input type="number" id="task-edit-target-m" label="Minutes" value={time.minutes} onChange={changeMinutesHandler} onBlur={() => true} />
+        </InputToolbar>
+        )}
+        <div className={classes['task__edit-buttonbar']}>
+          <Button icon={false} onClick={onCancel}>Cancel</Button>
+          <Button icon={false} submit>Save</Button>
+        </div>
       </form>
     </Card>
   );

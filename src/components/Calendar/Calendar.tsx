@@ -55,8 +55,6 @@ const Calendar: React.FC<PropsType> = ({
   const task = tasksState[taskId];
   const taskColor = getTaskColor(Object.values(tasksState).indexOf(task));
 
-  console.log(calendarTable);
-
   const getFill = (monthDay: MonthDayType) => {
     const dateKey = getDateKeyString(monthDay.date.toDate());
     const unit = daysState[dateKey]?.tasks[taskId]?.unit ?? tasksState[taskId].unit;

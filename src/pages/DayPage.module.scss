@@ -4,15 +4,21 @@
 }
 
 .header {
-  margin-bottom: 60px;
   display: flex;
   align-items: center;
+  margin-bottom: 60px;
 
-  h2 {
-    font-size: 1.4rem;
-    margin: 0px;
-    margin-top: -0.1em;
-    margin-left: 12px;
+  &__control {
+    flex-grow: 1;
+    display: flex;
+    align-items: center;
+
+    h2 {
+      font-size: 1.4rem;
+      margin: 0px;
+      margin-top: -0.1em;
+      margin-left: 12px;
+    }
   }
 }
 
@@ -24,4 +30,8 @@
     background-color: var(--base-color-1-contrast);
     color: black;
   }
+}
+
+.new-task {
+  margin-bottom: 24px;
 }

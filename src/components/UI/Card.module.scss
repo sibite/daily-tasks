@@ -5,8 +5,7 @@
   display: block;
   box-sizing: border-box;
   padding: 20px 15px;
-  @include mixins.margin-gap-vertical(24px);
-  
+
   background-color: var(--card-color);
   box-shadow:
     0px 1px 1px rgba(0, 0, 0, 0.07),

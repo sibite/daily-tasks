@@ -6,6 +6,6 @@
   }
 
   &--horizontal {
-    @include mixins.margin-gap-horizontal(50px);
+    padding: 25px;
   }
 }

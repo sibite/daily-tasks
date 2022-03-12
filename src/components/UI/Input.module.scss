@@ -1,0 +1,33 @@
+@use '../../styles/mixins';
+
+$height: 32px;
+
+.input {
+  display: block;
+  margin-bottom: 10px;
+
+  &--inside-toolbar {
+    @include mixins.margin-gap-horizontal(16px);
+  }
+
+  &__label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 5px;
+  }
+
+  &__control {
+    display: block;
+    box-sizing: border-box;
+    height: $height;
+    width: 240px;
+    padding: 0px 15px;
+    border: none;
+    border-radius: 100px;
+    background-color: var(--base-color-1);
+
+    font-family: inherit;
+    font-size: 1rem;
+    font-weight: bold;
+  }
+}

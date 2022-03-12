@@ -1,6 +1,10 @@
 @use '../../styles/sizes';
 @use '../../styles/mixins';
 
+.task {
+  @include mixins.margin-gap-vertical(24px);
+}
+
 .task:hover .task__edit-button {
   display: block;
 }
@@ -8,6 +12,12 @@
 .task__header {
   display: flex;
   align-items: center;
+}
+
+.task__edit-buttonbar {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 20px;
 }
 
 .task__edit-button {
