@@ -1,5 +1,11 @@
 @use '../../styles/mixins';
 
 .page__segment {
-  @include mixins.margin-gap-vertical(50px);
+  &--default {
+    @include mixins.margin-gap-vertical(50px);
+  }
+
+  &--horizontal {
+    @include mixins.margin-gap-horizontal(50px);
+  }
 }

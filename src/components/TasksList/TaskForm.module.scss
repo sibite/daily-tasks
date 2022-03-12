@@ -23,7 +23,7 @@ $height: 32px;
   font-size: 1rem;
   font-weight: bold;
 
-  @include mixins.margin-gap-horizontal(5px);
+  @include mixins.margin-gap-horizontal(10px);
 
   &::-webkit-outer-spin-button,
   &::-webkit-inner-spin-button {

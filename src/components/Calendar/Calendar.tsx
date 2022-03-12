@@ -13,15 +13,18 @@ const getFields = (
   weekTable: (MonthDayType | null)[],
   getFill: (arg0: MonthDayType) => number,
 ) => weekTable.map(
-  (day) => {
+  (day, index) => {
     let fill = 0;
 
     if (day !== null) {
       fill = getFill(day);
     }
 
+    const label = day?.dateNumber ? day.dateNumber.toString() : '';
+    const key = `${label}-${index}`;
+
     return (
-      <CalendarCell fill={fill} label={day?.dateNumber ? day.dateNumber.toString() : ''} />
+      <CalendarCell fill={fill} key={key} label={label} />
     );
   },
 );
@@ -30,8 +33,8 @@ const getRows = (
   calendarTable: ReturnType<typeof getCalendarTable>,
   getFill: (arg0: MonthDayType) => number,
 ) => (
-  calendarTable.map((weekTable) => (
-    <tr>
+  calendarTable.map((weekTable, index) => (
+    <tr key={index.toString()}>
       {getFields(weekTable, getFill)}
     </tr>
   ))

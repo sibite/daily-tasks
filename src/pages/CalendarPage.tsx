@@ -20,7 +20,7 @@ const CalendarPage: React.FC = () => {
   const [monthDate, setDayDate] = useState(thisMonth);
   const [taskId, setTaskId] = useState(firstTaskId);
 
-  const chooseTaskHandler = setTaskId;
+  const pickTaskHandler = setTaskId;
 
   const canForward = monthDate.clone().add(1, 'months').isSameOrBefore(thisMonth);
 
@@ -51,7 +51,7 @@ const CalendarPage: React.FC = () => {
           </header>
         </PageSegment>
         <PageSegment>
-          <TaskPicker />
+          <TaskPicker onPickTask={pickTaskHandler} selectedTaskId={taskId} />
         </PageSegment>
       </PageSegment>
       <PageSegment>

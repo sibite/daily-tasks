@@ -1,16 +1,40 @@
 @use '../../styles/sizes';
 @use '../../styles/mixins';
 
+.task-item__button {
+  all: unset;
+  border: none;
+  outline: none;
+  font: inherit;
+  display: block;
+  width: 100%;
+  text-align: left;
+}
+
 .task-item {
   cursor: pointer;
   display: flex;
   flex-direction: row;
   align-items: stretch;
   color: var(--base-text-color-1);
+  transition: all 70ms ease;
 
   h2 {
     margin: 0;
     font-size: 1.1rem;
+  }
+
+  &:active:not(&--active) {
+    background-color: var(--base-color-1);
+  }
+
+  &--active {
+    background-color: var(--task-color);
+    color: white;
+
+    & .task-item__bar {
+      background-color: white;
+    }
   }
 }
 
@@ -22,8 +46,9 @@
   width: 10px;
   margin-right: 10px;
 
-  background-color: var(--base-color-4);
+  background-color: var(--task-color);
   border-radius: 100px;
+  transition: all 600ms ease;
 }
 
 .task-item__header {

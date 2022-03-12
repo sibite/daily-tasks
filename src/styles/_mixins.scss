@@ -1,16 +1,16 @@
 @mixin margin-gap-horizontal($margin-size) {
-  
+
   &:not(:first-child) {
-    margin-left: $margin-size;
+    margin-left: $margin-size * 0.5;
   }
 
   &:not(:last-child) {
-    margin-right: $margin-size;
+    margin-right: $margin-size * 0.5;
   }
 }
 
 @mixin margin-gap-vertical($margin-size) {
-  
+
   &:not(:first-child) {
     margin-top: $margin-size;
   }
