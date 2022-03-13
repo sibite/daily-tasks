@@ -23,8 +23,7 @@ const Day: React.FC = () => {
   const navigate = useNavigate();
 
   const [isAdding, setIsAdding] = useState(false);
-  let dayDate = moment(params.dateKey);
-  if (!dayDate.isValid()) dayDate = today;
+  const dayDate = moment.min(moment(params.dateKey), today);
 
   const canForward = dayDate.clone().add(1, 'days').isSameOrBefore(today);
 

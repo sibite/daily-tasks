@@ -20,7 +20,7 @@ const CalendarPage: React.FC = () => {
   const params = useParams();
 
   const thisMonth = moment().startOf('month');
-  const firstTaskId = Object.values(tasksState)[0].id;
+  const firstTaskId = Object.values(tasksState)[0]?.id;
 
   let monthDate = moment(params.monthKey);
   if (!monthDate.isValid()) monthDate = thisMonth;

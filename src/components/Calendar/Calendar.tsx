@@ -28,6 +28,7 @@ const Calendar: React.FC<PropsType> = ({
   const taskColor = getTaskColor(Object.values(tasksState).indexOf(task));
 
   const getFill = useCallback((monthDay: MonthDayType) => {
+    if (taskId === null || taskId === undefined) return 0;
     const dateKey = getDateKeyString(monthDay.date.toDate());
     const unit = daysState[dateKey]?.tasks[taskId]?.unit ?? tasksState[taskId].unit;
     const target = tasksState[taskId][unit === TaskUnit.Timestamp ? 'timestamp' : 'count'];
