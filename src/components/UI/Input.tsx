@@ -7,15 +7,20 @@ import { ToolbarContext } from './InputToolbar';
 interface PropsType {
   label: string;
   value: string | number;
+  isValid?: boolean;
   id: string;
   type: HTMLInputTypeAttribute;
   onChange: ChangeEventHandler;
   onBlur: ReactEventHandler;
 }
 
+const defaultProps = {
+  isValid: true,
+};
+
 const Input: React.FC<PropsType> = (props) => {
   const {
-    label, value, id, type, onChange, onBlur,
+    label, value, isValid, id, type, onChange, onBlur,
   } = props;
 
   const isInsideToolbar = useContext(ToolbarContext) === true;
@@ -26,6 +31,7 @@ const Input: React.FC<PropsType> = (props) => {
       className={[
         classes.input,
         isInsideToolbar ? classes['input--inside-toolbar'] : '',
+        !isValid ? classes['input--invalid'] : '',
       ].join(' ')}
     >
       <span className={classes.input__label}>{label}</span>
@@ -40,5 +46,7 @@ const Input: React.FC<PropsType> = (props) => {
     </label>
   );
 };
+
+Input.defaultProps = defaultProps;
 
 export default Input;

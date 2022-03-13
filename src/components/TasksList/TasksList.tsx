@@ -69,7 +69,7 @@ const TasksList: React.FC<TasksListProps> = ({ items, date }) => {
         unit={task.unit}
       />
     );
-  });
+  }).reverse();
 
   return (
     <div className={classes['tasks-list']}>

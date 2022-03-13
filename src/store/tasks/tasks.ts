@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { dummyDays, dummyTasks } from '../dummy-data';
 import addTask from './add-task';
+import deleteTask from './delete-task';
 import { TasksStoreType } from './tasks-types';
 import updateDayUnit from './update-day-unit';
 import updateTask from './update-task';
@@ -24,6 +24,7 @@ const tasksSlice = createSlice({
   reducers: {
     addTask,
     updateTask,
+    deleteTask,
     updateTaskProgress,
     updateDayUnit,
   },

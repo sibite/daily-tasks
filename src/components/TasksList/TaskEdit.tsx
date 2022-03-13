@@ -39,6 +39,8 @@ const countReducer: React.Reducer<StateType<number>, number> = (_state, newValue
 interface TimeState {
   hours: number;
   minutes: number;
+  isHoursValid: boolean;
+  isMinutesValid: boolean;
   isValid?: boolean;
 }
 
@@ -49,17 +51,28 @@ const timeReducer: React.Reducer<TimeState, {
   let newState: TimeState = { ...state };
   if (action.type === 'SET_HOURS') {
     newState = {
+      ...state,
       hours: action.value,
-      minutes: state.minutes,
     };
   } else if (action.type === 'SET_MINUTES') {
     newState = {
-      hours: state.hours,
+      ...state,
       minutes: action.value,
     };
   } else {
     newState = { ...state };
   }
+
+  newState.isMinutesValid = newState.minutes < 60
+  && (
+    (newState.hours > 0 && newState.minutes >= 0)
+    || newState.minutes > 0
+  );
+
+  newState.isHoursValid = newState.hours < 24 && (
+    (newState.minutes > 0 && newState.hours >= 0)
+    || newState.hours > 0
+  );
 
   newState.isValid = newState.hours !== undefined && newState.minutes !== undefined
   && (newState.minutes ?? 0) >= 0 && (newState.minutes ?? 0) < 60
@@ -84,6 +97,8 @@ const TaskEdit: React.FC<TaskEditProps> = ({
     hours: Math.floor((initialTimestamp / 86400e3)) * 24 + new Date(initialTimestamp).getUTCHours(),
     minutes: new Date(initialTimestamp).getUTCMinutes(),
     isValid: true,
+    isHoursValid: true,
+    isMinutesValid: true,
   });
 
   useEffect(() => {
@@ -129,18 +144,18 @@ const TaskEdit: React.FC<TaskEditProps> = ({
   return (
     <Card>
       <form onSubmit={submitFormHandler}>
-        <Input type="text" id="task-edit-name" label="Name" value={name.value} onChange={changeNameHandler} onBlur={() => true} />
+        <Input type="text" id="task-edit-name" label="Name" value={name.value} isValid={name.isValid} onChange={changeNameHandler} onBlur={() => true} />
         <Select label="Unit" id="task-edit-unit" value={unit.value} onChange={changeUnitHandler}>
           <option value={TaskUnit.Count}>Count</option>
           <option value={TaskUnit.Timestamp}>Time</option>
         </Select>
         {unit.value === TaskUnit.Count && (
-          <Input type="number" id="task-edit-target" label="Target" value={count.value} onChange={changeTargetHandler} onBlur={() => true} />
+          <Input type="number" id="task-edit-target" label="Target" value={count.value} isValid={count.isValid} onChange={changeTargetHandler} onBlur={() => true} />
         )}
         {unit.value === TaskUnit.Timestamp && (
         <InputToolbar>
-          <Input type="number" id="task-edit-target-h" label="Hours" value={time.hours} onChange={changeHoursHandler} onBlur={() => true} />
-          <Input type="number" id="task-edit-target-m" label="Minutes" value={time.minutes} onChange={changeMinutesHandler} onBlur={() => true} />
+          <Input type="number" id="task-edit-target-h" label="Hours" value={time.hours} isValid={time.isHoursValid} onChange={changeHoursHandler} onBlur={() => true} />
+          <Input type="number" id="task-edit-target-m" label="Minutes" value={time.minutes} isValid={time.isMinutesValid} onChange={changeMinutesHandler} onBlur={() => true} />
         </InputToolbar>
         )}
         <div className={classes['task__edit-buttonbar']}>

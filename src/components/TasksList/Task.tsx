@@ -1,4 +1,4 @@
-import { EditFilled } from '@fluentui/react-icons';
+import { DeleteFilled, EditFilled } from '@fluentui/react-icons';
 import { Moment } from 'moment';
 import React, { useCallback, useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
@@ -57,6 +57,12 @@ const Task: React.FC<TaskProps> = ({
     onEditStart(id);
   };
 
+  const deleteHandler = () => {
+    // eslint-disable-next-line no-restricted-globals
+    if (!confirm(`Are you sure you want to delete "${name}" ?`)) return;
+    dispatch(tasksActions.deleteTask({ taskId: id }));
+  };
+
   const [isPlaying, setIsPlaying] = useState<boolean>(false);
 
   useEffect(() => {
@@ -81,7 +87,18 @@ const Task: React.FC<TaskProps> = ({
     <Card className={classes.task}>
       <header className={classes.task__header}>
         <h2>{name}</h2>
-        <Button icon={EditFilled} onClick={editStartHandler} className={classes['task__edit-button']} freeMargin />
+        <Button
+          icon={EditFilled}
+          onClick={editStartHandler}
+          className={classes['task__header-button']}
+          freeMargin
+        />
+        <Button
+          icon={DeleteFilled}
+          onClick={deleteHandler}
+          className={[classes['task__header-button'], classes['task__header-button--danger']].join(' ')}
+          freeMargin
+        />
       </header>
       <div className={classes['task__fulfill-container']}>
         <TaskBar

@@ -5,7 +5,7 @@
   @include mixins.margin-gap-vertical(24px);
 }
 
-.task:hover .task__edit-button {
+.task:hover .task__header-button {
   display: block;
 }
 
@@ -14,16 +14,20 @@
   align-items: center;
 }
 
+.task__header-button {
+  margin-top: -20px;
+  margin-left: 10px;
+  display: none;
+
+  &--danger {
+    color: #ff0000;
+  }
+}
+
 .task__edit-buttonbar {
   display: flex;
   justify-content: flex-end;
   margin-top: 20px;
-}
-
-.task__edit-button {
-  margin-top: -20px;
-  margin-left: 10px;
-  display: none;
 }
 
 h2 {

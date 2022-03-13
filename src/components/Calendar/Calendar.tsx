@@ -1,5 +1,5 @@
 import moment, { Moment } from 'moment';
-import React, { CSSProperties } from 'react';
+import React, { CSSProperties, useCallback } from 'react';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../store';
 import { TaskUnit } from '../../store/tasks/tasks-types';
@@ -8,37 +8,6 @@ import getTaskColor from '../../utilities/getTaskColor';
 import classes from './Calendar.module.scss';
 import CalendarCell from './CalendarCell';
 import getCalendarTable, { MonthDayType } from './getCalendarTable';
-
-const getFields = (
-  weekTable: (MonthDayType | null)[],
-  getFill: (arg0: MonthDayType) => number,
-) => weekTable.map(
-  (day, index) => {
-    let fill = 0;
-
-    if (day !== null) {
-      fill = getFill(day);
-    }
-
-    const label = day?.dateNumber ? day.dateNumber.toString() : '';
-    const key = `${label}-${index}`;
-
-    return (
-      <CalendarCell fill={fill} key={key} label={label} />
-    );
-  },
-);
-
-const getRows = (
-  calendarTable: ReturnType<typeof getCalendarTable>,
-  getFill: (arg0: MonthDayType) => number,
-) => (
-  calendarTable.map((weekTable, index) => (
-    <tr key={index.toString()}>
-      {getFields(weekTable, getFill)}
-    </tr>
-  ))
-);
 
 interface PropsType {
   monthDate: Moment;
@@ -51,20 +20,41 @@ const Calendar: React.FC<PropsType> = ({
   const tasksState = useSelector((state: RootState) => state.tasks.tasks);
   const daysState = useSelector((state: RootState) => state.tasks.days);
 
+  const today = moment().startOf('day');
+
   const calendarTable = getCalendarTable(monthDate);
   const task = tasksState[taskId];
   const taskColor = getTaskColor(Object.values(tasksState).indexOf(task));
 
-  const getFill = (monthDay: MonthDayType) => {
+  const getFill = useCallback((monthDay: MonthDayType) => {
     const dateKey = getDateKeyString(monthDay.date.toDate());
     const unit = daysState[dateKey]?.tasks[taskId]?.unit ?? tasksState[taskId].unit;
     const target = tasksState[taskId][unit === TaskUnit.Timestamp ? 'timestamp' : 'count'];
     const progress = daysState[dateKey]?.tasks[taskId]?.progress ?? 0;
 
     return progress / target;
-  };
+  }, [daysState, tasksState, taskId]);
 
-  const tableContent = getRows(calendarTable, getFill);
+  const getFields = useCallback((weekTable: (MonthDayType | null)[]) => weekTable.map(
+    (day, index) => {
+      const fill = day === null ? 0 : getFill(day);
+      const label = day?.dateNumber ? day.dateNumber.toString() : '';
+      const key = `${label}-${index}`;
+      const isSelected = day?.date.clone().startOf('day').isSame(today);
+
+      return <CalendarCell fill={fill} key={key} label={label} isSelected={isSelected} />;
+    },
+  ), [getFill, today]);
+
+  const getRows = () => (
+    calendarTable.map((weekTable, index) => (
+      <tr key={index.toString()}>
+        {getFields(weekTable)}
+      </tr>
+    ))
+  );
+
+  const tableContent = getRows();
 
   return (
     <div className={classes.calendar} style={{ '--task-color': taskColor } as CSSProperties}>
