@@ -14,7 +14,9 @@ const App: React.FC = () => (
     <Routes>
       <Route path="/" element={<Navigate to="/day" />} />
       <Route path="/day" element={<DayPage />} />
+      <Route path="/day/:dateKey" element={<DayPage />} />
       <Route path="/calendar" element={<CalendarPage />} />
+      <Route path="/calendar/:monthKey" element={<CalendarPage />} />
     </Routes>
   </Provider>
 );

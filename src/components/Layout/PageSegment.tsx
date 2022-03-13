@@ -2,18 +2,28 @@ import React, { useContext, useMemo } from 'react';
 import { PageContext } from './Page';
 import classes from './PageSegment.module.scss';
 
-const PageSegment: React.FC = ({ children }) => {
+interface PropsType {
+  className?: string;
+}
+
+const defaultProps = {
+  className: '',
+};
+
+const PageSegment: React.FC<PropsType> = ({ children, className }) => {
   const pageContext = useContext(PageContext);
-  const className = `${classes[`page__segment--${pageContext.type}`]}`;
+  const mergedClassName = `${classes[`page__segment--${pageContext.type}`]} ${className}`;
   const contextValue = useMemo(() => ({ type: 'default' }), []);
 
   return (
     <PageContext.Provider value={contextValue}>
-      <section className={className}>
+      <section className={mergedClassName}>
         {children}
       </section>
     </PageContext.Provider>
   );
 };
+
+PageSegment.defaultProps = defaultProps;
 
 export default PageSegment;

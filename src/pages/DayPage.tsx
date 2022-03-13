@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import moment from 'moment';
 import { ArrowLeftFilled, ArrowRightFilled } from '@fluentui/react-icons';
 import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate, useParams } from 'react-router-dom';
 import { RootState, tasksActions } from '../store';
 
 import Page from '../components/Layout/Page';
@@ -13,12 +14,17 @@ import getDayTasksArray from '../components/TasksList/getDayTasksArray.function'
 import classes from './DayPage.module.scss';
 import { TaskUnit } from '../store/tasks/tasks-types';
 import TaskEdit from '../components/TasksList/TaskEdit';
+import getDateKeyString from '../utilities/getDateKeyString.function';
 
 const Day: React.FC = () => {
   const today = moment().startOf('day');
-  const [dayDate, setDayDate] = useState(today);
-  const [isAdding, setIsAdding] = useState(false);
+  const params = useParams();
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const [isAdding, setIsAdding] = useState(false);
+  let dayDate = moment(params.dateKey);
+  if (!dayDate.isValid()) dayDate = today;
 
   const canForward = dayDate.clone().add(1, 'days').isSameOrBefore(today);
 
@@ -31,8 +37,12 @@ const Day: React.FC = () => {
 
   const switchIsAdding = () => setIsAdding((value) => !value);
 
-  const getChangeDayHandler = (numberOfDays: number) => () => setDayDate(
-    (currentDayDate) => moment.min(currentDayDate.clone().add(numberOfDays, 'days'), today),
+  const getChangeDayHandler = useCallback(
+    (numberOfDays: number) => () => {
+      const newDate = moment.min(dayDate.clone().add(numberOfDays, 'days'), today);
+      navigate(`/day/${getDateKeyString(newDate.toDate())}`);
+    },
+    [navigate, today, dayDate],
   );
 
   const finishAddingHandler = (name: string, target: number, unit: TaskUnit) => {
@@ -43,6 +53,18 @@ const Day: React.FC = () => {
   };
 
   const cancelAddingHandler = () => setIsAdding(false);
+
+  const keyPressHandler = useCallback((event: KeyboardEvent) => {
+    if (event.key === 'a') getChangeDayHandler(-1)();
+    else if (event.key === 'd') getChangeDayHandler(1)();
+  }, [getChangeDayHandler]);
+
+  useEffect(() => {
+    document.addEventListener('keypress', keyPressHandler);
+    return function cleanup() {
+      document.removeEventListener('keypress', keyPressHandler);
+    };
+  }, [keyPressHandler]);
 
   return (
     <Page>

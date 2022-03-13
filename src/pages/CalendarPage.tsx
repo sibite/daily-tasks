@@ -1,23 +1,29 @@
 import { ArrowLeftFilled, ArrowRightFilled } from '@fluentui/react-icons';
 import moment from 'moment';
-import React, { useState } from 'react';
+import React, {
+  useCallback, useEffect, useState,
+} from 'react';
 import { useSelector } from 'react-redux';
-import { RootState } from '../store';
+import { useNavigate, useParams } from 'react-router-dom';
+import Calendar from '../components/Calendar/Calendar';
 import Page from '../components/Layout/Page';
 import PageSegment from '../components/Layout/PageSegment';
-import Button from '../components/UI/Button';
-import classes from './CalendarPage.module.scss';
 import TaskPicker from '../components/TaskPicker/TaskPicker';
-import Calendar from '../components/Calendar/Calendar';
+import Button from '../components/UI/Button';
+import { RootState } from '../store';
+import classes from './CalendarPage.module.scss';
 
 const CalendarPage: React.FC = () => {
   const tasksState = useSelector((state: RootState) => state.tasks.tasks);
-  const daysState = useSelector((state: RootState) => state.tasks.days);
+
+  const navigate = useNavigate();
+  const params = useParams();
 
   const thisMonth = moment().startOf('month');
   const firstTaskId = Object.values(tasksState)[0].id;
 
-  const [monthDate, setDayDate] = useState(thisMonth);
+  let monthDate = moment(params.monthKey);
+  if (!monthDate.isValid()) monthDate = thisMonth;
   const [taskId, setTaskId] = useState(firstTaskId);
 
   const pickTaskHandler = setTaskId;
@@ -26,13 +32,29 @@ const CalendarPage: React.FC = () => {
 
   const dateString = monthDate.format('MMMM YYYY');
 
-  const getChangeMonthHandler = (numberOfMonths: number) => () => setDayDate(
-    (currentMonthDate) => moment.min(currentMonthDate.clone().add(numberOfMonths, 'months'), thisMonth),
+  const getChangeMonthHandler = useCallback(
+    (numberOfMonths: number) => () => {
+      const newDate = moment.min(monthDate.clone().add(numberOfMonths, 'months'), thisMonth);
+      navigate(`/calendar/${newDate.format('YYYY-MM')}`);
+    },
+    [navigate, thisMonth, monthDate],
   );
+
+  const keyPressHandler = useCallback((event: KeyboardEvent) => {
+    if (event.key === 'a') getChangeMonthHandler(-1)();
+    else if (event.key === 'd') getChangeMonthHandler(1)();
+  }, [getChangeMonthHandler]);
+
+  useEffect(() => {
+    document.addEventListener('keypress', keyPressHandler);
+    return function cleanup() {
+      document.removeEventListener('keypress', keyPressHandler);
+    };
+  }, [keyPressHandler]);
 
   return (
     <Page type="horizontal">
-      <PageSegment>
+      <PageSegment className={classes['task-picker-container']}>
         <PageSegment>
           <h1 className={classes.title}>Calendar</h1>
           <header className={classes.header}>

@@ -1,6 +1,7 @@
 import moment, { Moment } from 'moment';
 import React, { CSSProperties, useCallback } from 'react';
 import { useSelector } from 'react-redux';
+import { Link } from 'react-router-dom';
 import { RootState } from '../../store';
 import { TaskUnit } from '../../store/tasks/tasks-types';
 import getDateKeyString from '../../utilities/getDateKeyString.function';
@@ -41,8 +42,17 @@ const Calendar: React.FC<PropsType> = ({
       const label = day?.dateNumber ? day.dateNumber.toString() : '';
       const key = `${label}-${index}`;
       const isSelected = day?.date.clone().startOf('day').isSame(today);
+      const link = day !== null ? `/day/${getDateKeyString(day.date.toDate())}` : '';
 
-      return <CalendarCell fill={fill} key={key} label={label} isSelected={isSelected} />;
+      return (
+        <CalendarCell
+          linkTo={link}
+          fill={fill}
+          key={key}
+          label={label}
+          isSelected={isSelected}
+        />
+      );
     },
   ), [getFill, today]);
 
