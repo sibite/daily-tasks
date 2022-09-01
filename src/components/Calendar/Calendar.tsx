@@ -1,7 +1,6 @@
 import moment, { Moment } from 'moment';
 import React, { CSSProperties, useCallback } from 'react';
 import { useSelector } from 'react-redux';
-import { Link } from 'react-router-dom';
 import { RootState } from '../../store';
 import { TaskUnit } from '../../store/tasks/tasks-types';
 import getDateKeyString from '../../utilities/getDateKeyString.function';
